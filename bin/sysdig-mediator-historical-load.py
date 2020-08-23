@@ -20,8 +20,6 @@ import csv
 import StringIO
 import logging
 import calendar
-import os.path
-from os import path
 
 ##############
 #
@@ -192,8 +190,6 @@ myTimeStamp = time.strftime("%Y%m%d%H%M%S", time.gmtime())
 
 tm = datetime.datetime.utcnow()
 tm = tm - datetime.timedelta(minutes=tm.minute % 10, seconds=tm.second, microseconds = tm.microsecond)
-tm = tm - datetime.timedelta(minutes=tm.minute - 10)
-
 myUnixTimeStamp = str(calendar.timegm(tm.timetuple()))
 sysdigQueryUrl = myProtocol + "://" + mySysdigHost + ":" + mySysdigPort + "/api/data" 
 
@@ -205,49 +201,40 @@ sysdigQueryUrl = myProtocol + "://" + mySysdigHost + ":" + mySysdigPort + "/api/
 #
 #################################################################################################
 
-def apiReadWriteCsv(aspectData, aspectName):
+def apiReadWriteCsv(aspect, aspectName):
 
    myCsvFileName = mediatorHome + "/sysdigcsv/" + aspectName + "-" + myUnixTimeStamp + ".csv"
    logging.info("writing to csv file named " + myCsvFileName)
 
-   #outFile = open(myCsvFileName, "w")
+   outFile = open(myCsvFileName, "w")
 
    logging.info("Querying data for aspect " + aspectName + ", query url: " + sysdigQueryUrl)
 
    # read node configuration json into python dict
 
-   statsConfigDict = json.loads(aspectData)
+   statsConfigDict = json.loads(aspect)
    csvHeader = "timestamp,"
    for entries in statsConfigDict['metrics']:
       csvHeader = csvHeader + str(entries['id']) + ","
+      #print str(entries['id']),
    csvHeader = csvHeader.strip(',')
+   outFile.write(csvHeader)
+   outFile.write("\n")
 
-   # do query
-
-   statsResponse = sysDigQuery(aspectData)
-
-   # convert response to python dictionary
-
+   statsResponse = sysDigQuery(aspect)
+   #print nodeStatsResponse
    statsDict = json.loads(statsResponse)
 
-   # iterate through entries
    numitems = 0
    for entries in statsDict['data']:
      numitems = numitems + 1
+     #print str(entries['t']) + ",",
      csvLine = str(entries['t']) + ","
-     
-     # iterate through metrics 
-
      for dataentries in entries['d']:
         stritem = str(dataentries)
+        #print stritem + ",",
         csvLine = csvLine + stritem + ","
-     myCsvFileName = mediatorHome + "/sysdigcsv/" + aspectName + "-" + str(entries['t']) + ".csv"
-     if(path.exists(myCsvFileName)):
-        outFile = open(myCsvFileName, "a") 
-     else:
-        outFile = open(myCsvFileName, "w") 
-        outFile.write(csvHeader)
-        outFile.write("\n")
+        #print str(dataentries),
      csvLine = csvLine.strip(',')
      outFile.write(csvLine)
      outFile.write("\n")
