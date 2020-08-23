@@ -1,2 +1,3 @@
-sysdigcsv/*
+sysdigcsv/*.csv
 config/sysdig_config.txt
+log/sysdig-mediator.log

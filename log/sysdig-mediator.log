@@ -1284,3 +1284,22 @@ INFO:root:writing to csv file named /home/ncoadmin/sysdig-mediator//sysdigcsv/cl
 INFO:root:Querying data for aspect clusterStats, query url: https://eu-gb.monitoring.cloud.ibm.com:443/api/data
 INFO:root:Item count is: 4
 INFO:root:====== END RUN - TIMESTAMP IS 1598224200
+INFO:root:Sysdig apiKey is ibm-sysdigcloud-api=4c5bfe6178aafc69b7c4ed74da5d39c58b81c33a
+INFO:root:Sysdig host is eu-gb.monitoring.cloud.ibm.com
+INFO:root:Protocol to use is https
+INFO:root:Logging isDEBUG
+INFO:root:saving API response under log directory...
+INFO:root:====== BEGIN RUN - TIMESTAMP IS 1598224200
+INFO:root:writing to csv file named /home/ncoadmin/sysdig-mediator//sysdigcsv/namespaceStats-1598224200.csv
+INFO:root:Querying data for aspect namespaceStats, query url: https://eu-gb.monitoring.cloud.ibm.com:443/api/data
+INFO:root:Item count is: 60
+INFO:root:writing to csv file named /home/ncoadmin/sysdig-mediator//sysdigcsv/deploymentStats-1598224200.csv
+INFO:root:Querying data for aspect deploymentStats, query url: https://eu-gb.monitoring.cloud.ibm.com:443/api/data
+INFO:root:Item count is: 100
+INFO:root:writing to csv file named /home/ncoadmin/sysdig-mediator//sysdigcsv/nodeStats-1598224200.csv
+INFO:root:Querying data for aspect nodeStats, query url: https://eu-gb.monitoring.cloud.ibm.com:443/api/data
+INFO:root:Item count is: 100
+INFO:root:writing to csv file named /home/ncoadmin/sysdig-mediator//sysdigcsv/clusterStats-1598224200.csv
+INFO:root:Querying data for aspect clusterStats, query url: https://eu-gb.monitoring.cloud.ibm.com:443/api/data
+INFO:root:Item count is: 4
+INFO:root:====== END RUN - TIMESTAMP IS 1598224200

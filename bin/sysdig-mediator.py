@@ -138,7 +138,7 @@ logging.debug("Configuration variables are: " + str(configvars))
 
 if 'apiKey' in configvars.keys():
    myApiKey = configvars['apiKey']
-   logging.info("Sysdig apiKey is " + myApiKey)
+   #logging.info("Sysdig apiKey is " + myApiKey)
 else:
    print "FATAL: Sysdig apikey not defined in config file."
    exit()
@@ -159,7 +159,7 @@ else:
 
 if 'token' in configvars.keys():
    myToken = configvars['token']
-   logging.debug("Token to use: " + myToken)
+   #logging.debug("Token to use: " + myToken)
 else:
    print "FATAL: API key not defined in config file."
    exit()
