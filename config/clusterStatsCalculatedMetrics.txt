@@ -1,0 +1,3 @@
+gsClusterPodsAvailVsDesired: kubernetes.namespace.pod.available.count / kubernetes.namespace.pod.desired.count * 100
+gsClusterCpuRequestVsAllocatable: kubernetes.pod.resourceRequests.cpuCores / kubernetes.node.allocatable.cpuCores * 100
+gsClusterMemRequestVsAllocatable: kubernetes.pod.resourceRequests.memBytes / kubernetes.node.allocatable.memBytes * 100

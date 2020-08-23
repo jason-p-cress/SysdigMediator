@@ -1,0 +1,14 @@
+[Sysdig mediator configuration]
+protocol=https
+hostName=<your SysDig hostname>
+port=443
+token=<your SysDig token>
+apikey=<your sysdig cookie containing apikey>
+installpath=/home/ncoadmin/sysdig-mediator
+logginglevel=DEBUG
+saveApiResponse=1
+unWebify=0
+nodeStats=/home/ncoadmin/sysdig-mediator/config/nodeStats.json
+clusterStats=/home/ncoadmin/sysdig-mediator/config/clusterStats.json
+namespaceStats=/home/ncoadmin/sysdig-mediator/config/namespaceStats.json
+deploymentStats=/home/ncoadmin/sysdig-mediator/config/deploymentStats.json

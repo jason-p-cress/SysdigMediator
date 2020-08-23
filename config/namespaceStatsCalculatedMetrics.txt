@@ -1,0 +1,3 @@
+gsNsPodsReadyVsAllocatable: kubernetes.namespace.pod.available.count / kubernetes.namespace.pod.desired.count * 100
+gsNsCpuRequestVsAllocatable: cpu.cores.used / kubernetes.pod.resourceRequests.cpuCores * 100
+gsNsMemRequestVsAllocatable: memory.bytes.used / kubernetes.pod.resourceRequests.memBytes * 100

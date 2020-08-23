@@ -1,0 +1,162 @@
+{
+  "last": 600,
+  "sampling": 600,
+  "metrics": [
+    {
+      "id": "kubernetes.cluster.name"
+    },
+    {
+      "id": "kubernetes.node.allocatable.memBytes",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "kubernetes.pod.resourceRequests.memBytes",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "kubernetes.node.ready",
+      "aggregations": {
+        "time": "avg",
+        "group": "min"
+      }
+    },
+    {
+      "id": "kubernetes.node.allocatable.pods",
+      "aggregations": {
+        "time": "avg",
+        "group": "avg"
+      }
+    },
+    {
+      "id": "net.bytes.total",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "cpu.cores.used",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "kubernetes.pod.resourceRequests.cpuCores",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "kubernetes.node.allocatable.cpuCores",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "memory.bytes.used",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "kubernetes.pod.status.ready",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "container.count",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "net.bytes.in",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "net.bytes.out",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "net.request.time.in",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "net.request.time.out",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "net.error.count",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "net.request.count",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "file.bytes.total",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "file.time.total",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "kubernetes.namespace.pod.available.count",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    },
+    {
+      "id": "kubernetes.namespace.pod.desired.count",
+      "aggregations": {
+        "time": "avg",
+        "group": "sum"
+      }
+    }
+  ],
+  "dataSourceType": "host",
+  "paging": {
+    "from": 0,
+    "to": 99
+  }
+}
+
