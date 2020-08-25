@@ -45,12 +45,22 @@ def sysDigQuery(queryData):
    response = urllib2.urlopen(request)
    return response.read()
 
+####################
+#
+# Function to log out the API output
+#
+####################################
+def logApiResponse(aspect,apiContents):
+   serviceStatusApiOutput = open( mediatorHome + "/log/sysdigApiOutput-" + aspect + ".json", "w")
+   serviceStatusApiOutput.write(apiContents)
+   serviceStatusApiOutput.close
 
 ##############
 #
 # Simple function to validate json
 #
 ##################################
+
 def validateJSON(jsonData):
     try:
         json.loads(jsonData)
@@ -225,6 +235,8 @@ def apiReadWriteCsv(aspectData, aspectName):
    # do query
 
    statsResponse = sysDigQuery(aspectData)
+   if(saveApiResponse):
+      logApiResponse(aspectName,statsResponse)      
 
    # convert response to python dictionary
 
@@ -298,9 +310,6 @@ logging.info("====== END RUN - TIMESTAMP IS " + myUnixTimeStamp)
 #
 #####################################################################
 
-if(saveApiResponse):
-   serviceStatusApiOutput = open( mediatorHome + "/log/sysdigApiOutput.json", "w")
-   serviceStatusApiOutput.write(serviceStatusContents)
-   serviceStatusApiOutput.close
+#if(saveApiResponse):
 
 exit()
