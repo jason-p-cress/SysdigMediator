@@ -20,8 +20,6 @@ import csv
 import StringIO
 import logging
 import calendar
-import os.path
-from os import path
 
 ##############
 #
@@ -115,15 +113,15 @@ else:
    exit()
 
 if(os.path.isdir(mediatorHome + "log")):
-   logging.basicConfig(filename=mediatorHome + 'log/sysdig-mediator-historical.log',level=logging.INFO)
+   logging.basicConfig(filename=mediatorHome + 'log/sysdig-mediator.log',level=logging.INFO)
 else:
    print "FATAL: unable to find log directory." 
    exit()
 
-if(os.path.isdir(mediatorHome + "sysdigcsv-historical")):
-   csvFileDir = "../sysdigcsv-historical/"
+if(os.path.isdir(mediatorHome + "sysdigcsv")):
+   csvFileDir = "../sysdigcsv/"
 else:
-   print "FATAL: unable to find sysdigcsv-historical directory"
+   print "FATAL: unable to find sysdigcsv directory"
    exit()
 
 if(os.path.isfile(mediatorHome + "/config/sysdig_config.txt")):
@@ -138,7 +136,7 @@ logging.debug("Configuration variables are: " + str(configvars))
 
 if 'apiKey' in configvars.keys():
    myApiKey = configvars['apiKey']
-   #logging.info("Sysdig apiKey is " + myApiKey)
+   logging.info("Sysdig apiKey is " + myApiKey)
 else:
    print "FATAL: Sysdig apikey not defined in config file."
    exit()
@@ -159,7 +157,7 @@ else:
 
 if 'token' in configvars.keys():
    myToken = configvars['token']
-   #logging.debug("Token to use: " + myToken)
+   logging.debug("Token to use: " + myToken)
 else:
    print "FATAL: API key not defined in config file."
    exit()
@@ -192,8 +190,6 @@ myTimeStamp = time.strftime("%Y%m%d%H%M%S", time.gmtime())
 
 tm = datetime.datetime.utcnow()
 tm = tm - datetime.timedelta(minutes=tm.minute % 10, seconds=tm.second, microseconds = tm.microsecond)
-tm = tm - datetime.timedelta(minutes=tm.minute - 10)
-
 myUnixTimeStamp = str(calendar.timegm(tm.timetuple()))
 sysdigQueryUrl = myProtocol + "://" + mySysdigHost + ":" + mySysdigPort + "/api/data" 
 
@@ -205,54 +201,40 @@ sysdigQueryUrl = myProtocol + "://" + mySysdigHost + ":" + mySysdigPort + "/api/
 #
 #################################################################################################
 
-def apiReadWriteCsv(aspectData, aspectName):
+def apiReadWriteCsv(aspect, aspectName):
 
-   myCsvFileName = mediatorHome + "/sysdigcsv-historical/" + aspectName + "-" + myUnixTimeStamp + ".csv"
+   myCsvFileName = mediatorHome + "/sysdigcsv/" + aspectName + "-" + myUnixTimeStamp + ".csv"
    logging.info("writing to csv file named " + myCsvFileName)
 
-   #outFile = open(myCsvFileName, "w")
+   outFile = open(myCsvFileName, "w")
 
    logging.info("Querying data for aspect " + aspectName + ", query url: " + sysdigQueryUrl)
 
    # read node configuration json into python dict
 
-   statsConfigDict = json.loads(aspectData)
+   statsConfigDict = json.loads(aspect)
    csvHeader = "timestamp,"
    for entries in statsConfigDict['metrics']:
       csvHeader = csvHeader + str(entries['id']) + ","
-
-   # we need to modify aspect data and change the 'last' value to our days back number of seconds
-   statsConfigDict['last'] = secondsBack
-   newAspectData = json.dumps(statsConfigDict)
-
+      #print str(entries['id']),
    csvHeader = csvHeader.strip(',')
+   outFile.write(csvHeader)
+   outFile.write("\n")
 
-   # do query
-
-   statsResponse = sysDigQuery(newAspectData)
-
-   # convert response to python dictionary
-
+   statsResponse = sysDigQuery(aspect)
+   #print nodeStatsResponse
    statsDict = json.loads(statsResponse)
 
-   # iterate through entries
    numitems = 0
    for entries in statsDict['data']:
      numitems = numitems + 1
+     #print str(entries['t']) + ",",
      csvLine = str(entries['t']) + ","
-     
-     # iterate through metrics 
-
      for dataentries in entries['d']:
         stritem = str(dataentries)
+        #print stritem + ",",
         csvLine = csvLine + stritem + ","
-     myCsvFileName = mediatorHome + "/sysdigcsv-historical/" + aspectName + "-" + str(entries['t']) + ".csv"
-     if(path.exists(myCsvFileName)):
-        outFile = open(myCsvFileName, "a") 
-     else:
-        outFile = open(myCsvFileName, "w") 
-        outFile.write(csvHeader)
-        outFile.write("\n")
+        #print str(dataentries),
      csvLine = csvLine.strip(',')
      outFile.write(csvLine)
      outFile.write("\n")
@@ -275,19 +257,6 @@ def apiReadWriteCsv(aspectData, aspectName):
 #  Begins here...
 #
 ############################		
-if len(sys.argv) != 2:
-   print "Usage: " + sys.argv[0] + " <number of days back> "
-   print "Number of days back must not exceed 30"
-   exit()
-
-if int(sys.argv[1]) == 0 or int(sys.argv[1]) > 30:
-   print "Days back must be greater than zero and less than 30. You have " + sys.argv[1]
-   exit()
-
-daysBack = sys.argv[1]
-secondsBack = int(daysBack) * 86400
-
-print "secondsBack is " + str(secondsBack)
 
 logging.info("====== BEGIN RUN - TIMESTAMP IS " + myUnixTimeStamp)
 

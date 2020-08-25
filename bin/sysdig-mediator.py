@@ -279,7 +279,6 @@ for myAspect in aspectList:
       apiReadWriteCsv(aspectStats[myAspect], myAspect)
 
 logging.info("====== END RUN - TIMESTAMP IS " + myUnixTimeStamp)
-exit()
 
 ######
 #
@@ -300,67 +299,8 @@ exit()
 #####################################################################
 
 if(saveApiResponse):
-   serviceStatusApiOutput = open( mediatorHome + "/log/serviceStatusApiOutput.json", "w")
+   serviceStatusApiOutput = open( mediatorHome + "/log/sysdigApiOutput.json", "w")
    serviceStatusApiOutput.write(serviceStatusContents)
    serviceStatusApiOutput.close
 
-###########
-#
-#  Iterate through service status response and pull PI metrics of interest, write to files
-#
-##########################################################################################
-
 exit()
-recordCount = int(parsedServiceStatusContents['recordcount'])
-logging.debug("number of service status records: " + str(recordCount))
-
-recordIndex = 0
-while recordIndex < recordCount:
-
-   myHostName = parsedServiceStatusContents['servicestatus'][recordIndex]['host_name']
-   myServiceName = parsedServiceStatusContents['servicestatus'][recordIndex]['name']
-
-   logging.debug("Service name: " + myServiceName)
-   if(parsedServiceStatusContents['servicestatus'][recordIndex]['performance_data']):
-      myPerfData = str(parsedServiceStatusContents['servicestatus'][recordIndex]['performance_data'])
-      logging.debug("performance_data=" + myPerfData)
-   else:
-      pass
-      logging.debug("WARNING: no performance data found for Nagios monitor record: " + myServiceName)
-
-   #########################
-   # 
-   #  Check to see if there are any matches (explicit or substring) for this record in the configuration dictionary
-   #
-   ################################################################################################################
-
-   
-   for serviceIndex in configDict:
-      substringMatch = 0
-      extr = re.search('match:(.*)', configDict[serviceIndex]['servicename'])
-      if extr:
-         checkMatch = extr.group(1)
-         if(checkMatch in myServiceName):
-            logging.debug("Match on substring test for monitor config record: " + myServiceName)
-            logging.debug("checkMatch is: " + checkMatch + " and myServiceName is: " + myServiceName)
-            substringMatch = 1 
-         else:
-            checkMatch = "not-substring-match"
-         
-      if((configDict[serviceIndex]['servicename'] == myServiceName) or (substringMatch == 1)):
-         logging.debug("Found matching config entry for " + myServiceName + " and config record " + configDict[serviceIndex]['servicename'])
-         logging.debug("writing to filename " + configDict[serviceIndex]['filename'] + ", csvheader " +  configDict[serviceIndex]['csvheader'] + ", data " + configDict[serviceIndex]['csvdatadef'])
-         writePiCsvEntry(configDict[serviceIndex]['filename'], configDict[serviceIndex]['csvheader'], configDict[serviceIndex]['csvdatadef'], configDict[serviceIndex]['csvDict'], parsedServiceStatusContents['servicestatus'][recordIndex])
-        
-            
-      else:
-         pass
-         logging.debug("No config entry for " + myServiceName)
-         ##########################
-         #
-         #  No explicit or "match:" definitions found in the config for this monitor API record
-         #
-         ###################################################################################
-
-   recordIndex = recordIndex + 1
-
