@@ -196,6 +196,7 @@ if 'saveApiResponse' in configvars.keys():
    else:
       saveApiResponse = 0
 
+myTimeStamp = time.strftime("%Y%m%d%H%M%S", time.gmtime())
 
 # create unix timestamp from current run time and align it to previous 10 minute boundary to match SysDig response
 
@@ -252,10 +253,7 @@ def apiReadWriteCsv(aspectData, aspectName):
      for dataentries in entries['d']:
         stritem = str(dataentries)
         csvLine = csvLine + stritem + ","
-     #myTimeStamp = datetime.datetime.utcfromtimestamp(entries['t']).strftime('%Y%m%d%H%M%s')
-     #timezone = subprocess.check_output("/bin/date +%Z")
-     myTimeStamp = datetime.datetime.fromtimestamp(entries['t']).strftime('%Y%m%d_%H%M')
-     myCsvFileName = mediatorHome + "/sysdigcsv/" + aspectName + "__" + myTimeStamp + ".csv"
+     myCsvFileName = mediatorHome + "/sysdigcsv/" + aspectName + "-" + str(entries['t']) + ".csv"
      if(path.exists(myCsvFileName)):
         outFile = open(myCsvFileName, "a") 
      else:
@@ -284,7 +282,6 @@ def apiReadWriteCsv(aspectData, aspectName):
 #  Begins here...
 #
 ############################		
-
 
 logging.info("====== BEGIN RUN - TIMESTAMP IS " + myUnixTimeStamp)
 
